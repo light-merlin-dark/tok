@@ -1,8 +1,18 @@
 {
   "name": "@light-merlin-dark/tok",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Fast token estimation and cost calculation for enterprise LLMs with CLI and MCP support",
-  "keywords": ["token", "estimator", "llm", "gpt", "claude", "cost", "calculator", "mcp", "cli"],
+  "keywords": [
+    "token",
+    "estimator",
+    "llm",
+    "gpt",
+    "claude",
+    "cost",
+    "calculator",
+    "mcp",
+    "cli"
+  ],
   "author": "Light Merlin Dark <noreply@light-merlin-dark.com>",
   "license": "MIT",
   "repository": {

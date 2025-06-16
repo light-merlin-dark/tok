@@ -45,3 +45,5 @@ scripts/
 
 # Private makefile for important development tasks
 Makefile
+dist
+node_modules
