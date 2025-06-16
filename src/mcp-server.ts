@@ -249,24 +249,6 @@ server.tool(
   }
 );
 
-// Dynamic tool descriptions
-function buildEstimateDescription(): string {
-  return `Estimate token count and cost for given text.
-
-PARAMETERS:
-• text (required) - The text to analyze
-• model - LLM model for cost calculation (default: gpt-4o)
-• exact - Use exact token counting if available (default: false)
-• track - Add to cost tracking session (default: false)
-
-AVAILABLE MODELS:
-${Array.from(prices.list().keys()).join(', ')}
-
-EXAMPLES:
-• estimate_tokens({ text: "Hello world" })
-• estimate_tokens({ text: "Long prompt here...", model: "claude-3-opus", exact: true, track: true })`;
-}
-
 // Note: Dynamic tool descriptions would be set here if the SDK supports it
 // For now, the description is static in the tool definition
 

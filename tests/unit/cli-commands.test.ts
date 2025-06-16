@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { parseArgs } from '@/cli/router';
 import { createCommandError, ErrorCode } from '@/cli/shared/errors';
 
