@@ -1,8 +1,8 @@
-# Tok 🧮
+# Tok | Token Estimator 🧮
 
-**Fast token estimation and cost calculation for enterprise LLMs with CLI and MCP support.**
+**MCP-first token estimation and cost calculation for enterprise LLMs with lightning-fast CLI support.**
 
-Built from the ground up for seamless integration with Claude Code, Claude Desktop, and other AI tools that support MCP. tok provides instant token counting and cost tracking across all major language models with a lean, zero-overhead design.
+Built from the ground up for seamless integration with Claude Code, Claude Desktop, and other AI tools that support Model Context Protocol (MCP). Tok provides instant token counting and cost tracking across all major language models with a lean, zero-overhead design.
 
 ## 🚀 Why tok?
 
@@ -12,20 +12,22 @@ Built from the ground up for seamless integration with Claude Code, Claude Deskt
 - **Zero runtime dependencies** (except optional tiktoken)
 - **Handles MB-scale prompts** without breaking a sweat
 
-### Universal LLM Support
-Pre-configured pricing for all major models:
-- **OpenAI**: GPT-4o, GPT-4 Turbo, GPT-3.5 Turbo
-- **Anthropic**: Claude 3 Opus, Sonnet, Haiku
-- **Meta**: Llama 3 70B, 8B
-- **Mistral**: Mixtral 8x7B
-- **Custom models**: Add your own pricing
+### Extensible Provider Support
+Comes with built-in support for popular services through our plugin architecture:
+- **OpenAI Plugin**: GPT-4o, GPT-4 Turbo, GPT-3.5 Turbo, and more
+- **Anthropic Plugin**: Claude 3 Opus, Sonnet, Haiku, and newer models
+- **OpenRouter Plugin**: Access to 100+ models through a unified API
+- **Custom Providers**: Create your own plugin for any LLM service and submit a PR
 
-### Native MCP Integration
-First-class Model Context Protocol support means AI agents can:
+The plugin architecture makes it easy to add support for new providers while maintaining consistent token estimation and cost tracking across all models.
+
+### MCP-Native Design
+Designed as an MCP-first tool, AI agents can:
 - Estimate tokens for any text instantly
 - Track costs across multiple LLM calls
 - Access real-time pricing information
 - Manage cost budgets programmatically
+- Integrate seamlessly with Claude Code and other MCP-compatible tools
 
 ## 🔌 Model Context Protocol (MCP) Setup
 
@@ -256,4 +258,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
-Built with ❤️ by [@EnchantedRobot](https://twitter.com/EnchantedRobot)
+Built with ❤️ by [@EnchantedRobot](https://x.com/EnchantedRobot)
