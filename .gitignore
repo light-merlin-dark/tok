@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Testing
+coverage/
+.vitest/
+
+# Temporary
+*.tmp
+*.temp
+
+# Private Claude config
+.claude
+
+# Private Zed config
+.zed
+
+# Private docs to help build the project
+docs/
+
+# Private scripts for development tasks
+scripts/
+
+# Private makefile for important development tasks
+Makefile
