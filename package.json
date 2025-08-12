@@ -1,7 +1,7 @@
 {
   "name": "@light-merlin-dark/tok",
-  "version": "0.1.2",
-  "description": "Fast token estimation and cost calculation for enterprise LLMs with CLI and MCP support",
+  "version": "0.2.1",
+  "description": "Fast token estimation and cost calculation for enterprise LLMs with CLI support",
   "keywords": [
     "token",
     "estimator",
@@ -10,7 +10,6 @@
     "claude",
     "cost",
     "calculator",
-    "mcp",
     "cli"
   ],
   "author": "Light Merlin Dark <noreply@light-merlin-dark.com>",
@@ -25,8 +24,7 @@
   "homepage": "https://github.com/light-merlin-dark/tok#readme",
   "main": "dist/index.js",
   "bin": {
-    "tok": "dist/cli/main.js",
-    "tok-mcp": "dist/mcp-server.js"
+    "tok": "dist/cli/main.js"
   },
   "files": [
     "dist/",
@@ -41,10 +39,9 @@
     "test:watch": "vitest",
     "lint": "eslint src tests --ext .ts",
     "lint:fix": "eslint src tests --ext .ts --fix",
-    "prepublishOnly": "npm run build && chmod +x dist/cli/main.js dist/mcp-server.js"
+    "prepublishOnly": "npm run build && chmod +x dist/cli/main.js"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.12.1",
     "chalk": "^5.3.0",
     "zod": "^3.22.4"
   },
@@ -56,9 +53,6 @@
     "tsx": "^4.0.0",
     "typescript": "^5.4.0",
     "vitest": "^1.0.0"
-  },
-  "optionalDependencies": {
-    "@dqbd/tiktoken": "^1.0.0"
   },
   "engines": {
     "node": ">=18.0.0"

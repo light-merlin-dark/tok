@@ -7,7 +7,6 @@ dist/
 
 # Environment
 .env
-.env.local
 
 # OS
 .DS_Store
@@ -28,7 +27,6 @@ coverage/
 .vitest/
 
 # Temporary
-*.tmp
 *.temp
 
 # Private Claude config
@@ -47,3 +45,14 @@ scripts/
 Makefile
 dist
 node_modules
+_blueprints
+*.test
+test.dry
+debug.test
+options.test
+dryrun.final
+final.dryrun.test
+blueprints
+chat.md
+.blueprints
+.chat.md

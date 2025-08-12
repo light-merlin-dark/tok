@@ -1,15 +1,23 @@
 # Tok | Token Estimator 🧮
 
-**MCP-first token estimation and cost calculation for enterprise LLMs with lightning-fast CLI support.**
+**Lightning-fast token estimation and cost calculation for enterprise LLMs with CLI support.**
 
-Built from the ground up for seamless integration with Claude Code, Claude Desktop, and other AI tools that support Model Context Protocol (MCP). Tok provides instant token counting and cost tracking across all major language models with a lean, zero-overhead design.
+Tok provides instant token counting and cost tracking across all major language models with a lean, zero-overhead design. Perfect for developers who need quick, accurate token estimates without heavy dependencies.
+
+## 📝 A Note on Architecture Choices
+
+~~**MCP (Model Context Protocol) Support**~~ - **Intentionally Removed**
+
+While MCP is well-intentioned and excellent for certain use cases, after careful consideration, I've determined that the necessity doesn't exist for this particular tool. The MCP library alone adds approximately 20MB to the package size - for a lightweight token estimation tool, the juice simply isn't worth the squeeze.
+
+Modern AI models are increasingly effective at executing CLI commands swiftly and accurately. In this context, a lean CLI-first approach provides better value than the overhead of MCP integration. The case for MCP must be made on a context-by-context basis - while it can work exceptionally well in certain scenarios, for a focused utility like tok, the traditional CLI approach offers superior efficiency and simplicity.
 
 ## 🚀 Why tok?
 
 ### Lightning Fast Estimation
 - **Sub-microsecond performance** for character-based estimation
-- **Optional exact counting** with tiktoken when precision matters
-- **Zero runtime dependencies** (except optional tiktoken)
+- **Smart heuristic algorithms** for accurate token approximation
+- **Zero runtime dependencies** for minimal package size
 - **Handles MB-scale prompts** without breaking a sweat
 
 ### Extensible Provider Support
@@ -21,35 +29,13 @@ Comes with built-in support for popular services through our plugin architecture
 
 The plugin architecture makes it easy to add support for new providers while maintaining consistent token estimation and cost tracking across all models.
 
-### MCP-Native Design
-Designed as an MCP-first tool, AI agents can:
-- Estimate tokens for any text instantly
-- Track costs across multiple LLM calls
-- Access real-time pricing information
-- Manage cost budgets programmatically
-- Integrate seamlessly with Claude Code and other MCP-compatible tools
-
-## 🔌 Model Context Protocol (MCP) Setup
-
-### Quick Start with Claude Code
-```bash
-# Install globally
-npm install -g @light-merlin-dark/tok
-
-# Add to Claude Code
-claude mcp add-json tok '{
-  "type":"stdio",
-  "command":"tok-mcp",
-  "env":{"NODE_NO_WARNINGS":"1"}
-}'
-```
-
-### Available MCP Tools
-- `estimate_tokens` - Estimate token count and cost for any text
-- `get_cost_summary` - View aggregated cost tracking data
-- `list_models` - List all available models and pricing
-- `set_model_price` - Configure custom model pricing
-- `reset_tracker` - Reset cost tracking session
+### CLI-First Design (by Choice)
+Deliberately designed as a CLI-first tool for:
+- Instant token estimation for any text
+- Cost tracking across multiple LLM calls
+- Real-time pricing information access
+- Programmatic cost budget management
+- Simple integration into any workflow
 
 ## 📦 Installation
 
@@ -75,9 +61,6 @@ tok estimate "Hello world"
 
 # Estimate with specific model pricing
 tok estimate "Your prompt here" --model gpt-4o
-
-# Use exact token counting (requires tiktoken)
-tok estimate "Precise count needed" --exact
 
 # Read from file
 tok estimate prompt.txt --file
@@ -109,31 +92,41 @@ tok price set gpt-4-turbo --prompt 10 --completion 30
 tok price list --format json
 ```
 
-### MCP Usage in AI Agents
-
-Once configured, AI agents can use commands like:
+### Programmatic Usage
 
 ```javascript
-// Estimate tokens
-await estimate_tokens({
-  text: "Long prompt text here...",
-  model: "gpt-4o",
-  exact: true,
-  track: true
-});
+import {
+  CharDivEstimator,
+  TiktokenEstimator,
+  PriceTable,
+  CostTracker,
+  CostCalculator
+} from '@light-merlin-dark/tok';
 
-// Check costs
-await get_cost_summary();
+// Fast estimation
+const estimator = new CharDivEstimator();
+const tokens = estimator.estimate("Your text here");
 
-// List available models
-await list_models();
+// Advanced estimation with heuristics
+const advancedEstimator = new TiktokenEstimator();
+await advancedEstimator.initialize();
+const preciseTokens = advancedEstimator.estimate("Your text here");
+
+// Cost tracking
+const prices = new PriceTable();
+const tracker = new CostTracker();
+
+const price = prices.get('gpt-4o');
+tracker.add('gpt-4o', tokens, 0, price);
+
+console.log(`Total cost: $${tracker.grandTotal()}`);
 ```
 
 ## ✨ Key Features
 
-### 🎯 Dual Estimation Modes
-- **Fast mode** (default): Character-based estimation at ~chars/4
-- **Exact mode**: Tiktoken-based counting for precise limits
+### 🎯 Smart Estimation Algorithms
+- **Fast mode** (CharDivEstimator): Simple character-based estimation at ~chars/4
+- **Advanced mode** (TiktokenEstimator): Heuristic-based estimation with word analysis, punctuation weighting, and smart averaging
 
 ### 💰 Comprehensive Cost Tracking
 - Real-time cost aggregation across models
@@ -184,13 +177,20 @@ Prices are per million tokens ($/M):
 
 ## 🧮 How It Works
 
-### Token Estimation Algorithm
-```typescript
-// Fast estimation (default)
-tokens = Math.ceil(text.length / 4)
+### Token Estimation Algorithms
 
-// Exact counting (with tiktoken)
-tokens = tiktoken.encode(text).length
+**Fast Estimation (CharDivEstimator)**
+```typescript
+tokens = Math.ceil(text.length / 4)
+```
+
+**Advanced Heuristic Estimation (TiktokenEstimator)**
+```typescript
+// Analyzes text structure for better accuracy
+// - Word count with multiplier
+// - Punctuation and special character weighting
+// - Number and uppercase letter considerations
+// - Averages multiple estimation methods
 ```
 
 ### Cost Calculation
@@ -233,6 +233,7 @@ npm run test:watch
 ```typescript
 import {
   CharDivEstimator,
+  TiktokenEstimator,
   PriceTable,
   CostTracker,
   CostCalculator
@@ -241,6 +242,11 @@ import {
 // Fast estimation
 const estimator = new CharDivEstimator();
 const tokens = estimator.estimate("Your text here");
+
+// Advanced estimation
+const advancedEstimator = new TiktokenEstimator();
+await advancedEstimator.initialize();
+const preciseTokens = advancedEstimator.estimate("Your text here");
 
 // Cost tracking
 const prices = new PriceTable();

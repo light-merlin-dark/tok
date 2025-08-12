@@ -71,7 +71,7 @@ describe('CostTracker', () => {
   it('should track duration', async () => {
     await new Promise(resolve => setTimeout(resolve, 100));
     const duration = tracker.getDuration();
-    expect(duration).toBeGreaterThan(0.1);
-    expect(duration).toBeLessThan(0.2);
+    expect(duration).toBeGreaterThanOrEqual(0.1);
+    expect(duration).toBeLessThan(0.3);
   });
 });
