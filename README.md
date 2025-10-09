@@ -7,7 +7,7 @@
    ╚═╝    ╚═════╝ ╚═╝  ╚═╝
 
 Fast token estimation CLI with cost calculation
-Zero dependencies • 85KB
+Zero dependencies • 85KB • Bring your own pricing
 ```
 
 ## Install
