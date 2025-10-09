@@ -5,9 +5,10 @@
    ██║   ██║   ██║██╔═██╗
    ██║   ╚██████╔╝██║  ██╗
    ╚═╝    ╚═════╝ ╚═╝  ╚═╝
-```
 
-Fast token estimation CLI with cost calculation. Zero dependencies, 85KB.
+Fast token estimation CLI with cost calculation
+Zero dependencies • 85KB
+```
 
 ## Install
 
