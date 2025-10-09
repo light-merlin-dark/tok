@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'bun:test';
-import { route } from '../../src/cli/router';
-import { RuntimeContext } from '../../src/cli/shared/core';
-import { resetTracker } from '../../src/cli/utils/tracker';
+import { route } from '../src/cli/router';
+import { RuntimeContext } from '../src/cli/shared/core';
+import { resetTracker } from '../src/cli/utils/tracker';
 
 describe('CLI Integration Tests', () => {
   const mockContext: RuntimeContext = {
@@ -77,8 +77,8 @@ describe('CLI Integration Tests', () => {
       expect(result.success).toBe(true);
     });
 
-    it('should set custom price', async () => {
-      const result = await route(['price', 'set', 'custom-model', '--prompt', '5', '--completion', '10'], mockContext);
+    it('should set custom price with --input/--output', async () => {
+      const result = await route(['price', 'set', 'custom-model', '--input', '5', '--output', '10'], mockContext);
       expect(result.success).toBe(true);
       expect(result.data).toEqual({
         model: 'custom-model',
@@ -86,10 +86,28 @@ describe('CLI Integration Tests', () => {
       });
     });
 
-    it('should require both prompt and completion prices', async () => {
-      const result = await route(['price', 'set', 'custom-model', '--prompt', '5'], mockContext);
+    it('should set custom price with -i/-o shortcuts', async () => {
+      const result = await route(['price', 'set', 'custom-model-2', '-i', '3', '-o', '7'], mockContext);
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual({
+        model: 'custom-model-2',
+        price: { prompt: 3, completion: 7 }
+      });
+    });
+
+    it('should support legacy --prompt/--completion flags', async () => {
+      const result = await route(['price', 'set', 'legacy-model', '--prompt', '5', '--completion', '10'], mockContext);
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual({
+        model: 'legacy-model',
+        price: { prompt: 5, completion: 10 }
+      });
+    });
+
+    it('should require both input and output prices', async () => {
+      const result = await route(['price', 'set', 'custom-model', '--input', '5'], mockContext);
       expect(result.success).toBe(false);
-      expect(result.message).toContain('provide both --prompt and --completion');
+      expect(result.message).toContain('provide both --input and --output');
     });
 
     it('should show price subcommand help', async () => {

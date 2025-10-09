@@ -31,8 +31,15 @@ export function parseArgs(args: string[]): ParsedArgs {
     } else if (arg.startsWith('-') && arg.length > 1) {
       // Short option
       const flags = arg.slice(1);
-      for (const flag of flags) {
-        options[flag] = true;
+
+      // If it's a single flag followed by a value, handle it specially
+      if (flags.length === 1 && i + 1 < args.length && !args[i + 1].startsWith('-')) {
+        options[flags] = args[++i];
+      } else {
+        // Multiple flags or boolean flag
+        for (const flag of flags) {
+          options[flag] = true;
+        }
       }
     } else {
       // Regular argument

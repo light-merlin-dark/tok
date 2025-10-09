@@ -33,8 +33,8 @@ tok estimate "Hello world" --model gpt-4o
 Set your own pricing ($/M tokens):
 
 ```bash
-tok price set gpt-4o --prompt 2.50 --completion 10.00
-tok price set claude-3-opus --prompt 15.00 --completion 75.00
+tok price set gpt-4o --input 2.50 --output 10.00
+tok price set claude-3-opus -i 15.00 -o 75.00
 tok price list
 ```
 

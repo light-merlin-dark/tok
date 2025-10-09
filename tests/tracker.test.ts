@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'bun:test';
-import { CostTracker } from '../../src/CostTracker';
-import { ModelPrice } from '../../src/pricing/PriceTable';
+import { CostTracker } from '../src/CostTracker';
+import { ModelPrice } from '../src/pricing/PriceTable';
 
 describe('CostTracker', () => {
   let tracker: CostTracker;

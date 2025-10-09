@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'bun:test';
-import { parseArgs } from '../../src/cli/router';
-import { createCommandError, ErrorCode } from '../../src/cli/shared/errors';
+import { parseArgs } from '../src/cli/router';
+import { createCommandError, ErrorCode } from '../src/cli/shared/errors';
 
 describe('CLI Router', () => {
   describe('parseArgs', () => {

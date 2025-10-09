@@ -69,6 +69,11 @@ Examples:
 });
 
 interface PriceSetOptions {
+  input?: string;
+  i?: string;
+  output?: string;
+  o?: string;
+  // Backward compatibility
   prompt?: string;
   p?: string;
   completion?: string;
@@ -87,12 +92,14 @@ Arguments:
   model                 Model name to set pricing for
 
 Options:
-  -p, --prompt <price>      Prompt price per million tokens
-  -c, --completion <price>  Completion price per million tokens
+  -i, --input <price>       Input token price per million tokens
+  -o, --output <price>      Output token price per million tokens
+  -p, --prompt <price>      Alias for --input (deprecated)
+  -c, --completion <price>  Alias for --output (deprecated)
 
 Examples:
-  tok price set gpt-4-turbo --prompt 10 --completion 30
-  tok price set custom-model -p 5.00 -c 15.00
+  tok price set gpt-4-turbo --input 10 --output 30
+  tok price set custom-model -i 5.00 -o 15.00
 `,
   arguments: [
     {
@@ -103,13 +110,23 @@ Examples:
   ],
   options: [
     {
+      flag: 'i|input',
+      description: 'Input token price per million tokens',
+      type: 'string'
+    },
+    {
+      flag: 'o|output',
+      description: 'Output token price per million tokens',
+      type: 'string'
+    },
+    {
       flag: 'p|prompt',
-      description: 'Prompt price per million tokens',
+      description: 'Alias for --input (deprecated)',
       type: 'string'
     },
     {
       flag: 'c|completion',
-      description: 'Completion price per million tokens',
+      description: 'Alias for --output (deprecated)',
       type: 'string'
     }
   ],
@@ -125,19 +142,20 @@ Examples:
       );
     }
 
-    const promptPrice = opts.prompt || opts.p;
-    const completionPrice = opts.completion || opts.c;
+    // Support both new flags (input/output) and legacy flags (prompt/completion)
+    const inputPrice = opts.input || opts.i || opts.prompt || opts.p;
+    const outputPrice = opts.output || opts.o || opts.completion || opts.c;
 
-    if (!promptPrice || !completionPrice) {
+    if (!inputPrice || !outputPrice) {
       throw createCommandError(
         ErrorCode.INVALID_ARGUMENT,
-        'Please provide both --prompt and --completion prices'
+        'Please provide both --input and --output prices'
       );
     }
 
     const price = {
-      prompt: parseFloat(promptPrice),
-      completion: parseFloat(completionPrice)
+      prompt: parseFloat(inputPrice),
+      completion: parseFloat(outputPrice)
     };
 
     if (isNaN(price.prompt) || isNaN(price.completion)) {
@@ -157,8 +175,8 @@ Examples:
     saveConfig(config);
 
     logger.success(`✓ Price set for ${model}`);
-    console.log(`  Prompt: $${price.prompt}/M tokens`);
-    console.log(`  Completion: $${price.completion}/M tokens`);
+    console.log(`  Input: $${price.prompt}/M tokens`);
+    console.log(`  Output: $${price.completion}/M tokens`);
 
     return { success: true, data: { model, price } };
   }
