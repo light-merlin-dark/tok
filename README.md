@@ -1,12 +1,8 @@
-# tok
+<div align="center">
+  <img src="https://raw.githubusercontent.com/light-merlin-dark/tok/main/assets/tok.png" alt="tok" width="200">
+</div>
 
-```
- _____ ___  _  __
-|_   _/ _ \| |/ /
-  | || | | | ' /
-  | || |_| | . \
-  |_| \___/|_|\_\
-```
+# tok
 
 Fast token estimation CLI with cost calculation. Zero dependencies, 85KB.
 

@@ -1,6 +1,6 @@
 {
   "name": "@light-merlin-dark/tok",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Fast token estimation and cost calculation for enterprise LLMs with CLI support",
   "keywords": [
     "token",
