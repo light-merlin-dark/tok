@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { CharDivEstimator } from '@/estimators/CharDivEstimator';
+import { describe, it, expect } from 'bun:test';
+import { CharDivEstimator } from '../../src/estimators/CharDivEstimator';
 
 describe('CharDivEstimator', () => {
   it('should estimate tokens with default divisor', () => {

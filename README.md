@@ -1,168 +1,110 @@
-# Tok | Token Estimator 🧮
+# tok
 
-**Lightning-fast token estimation and cost calculation for enterprise LLMs with CLI support.**
-
-Tok provides instant token counting and cost tracking across all major language models with a lean, zero-overhead design. Perfect for developers who need quick, accurate token estimates without heavy dependencies.
-
-## 📝 A Note on Architecture Choices
-
-~~**MCP (Model Context Protocol) Support**~~ - **Intentionally Removed**
-
-While MCP is well-intentioned and excellent for certain use cases, after careful consideration, I've determined that the necessity doesn't exist for this particular tool. The MCP library alone adds approximately 20MB to the package size - for a lightweight token estimation tool, the juice simply isn't worth the squeeze.
-
-Modern AI models are increasingly effective at executing CLI commands swiftly and accurately. In this context, a lean CLI-first approach provides better value than the overhead of MCP integration. The case for MCP must be made on a context-by-context basis - while it can work exceptionally well in certain scenarios, for a focused utility like tok, the traditional CLI approach offers superior efficiency and simplicity.
-
-## 🚀 Why tok?
-
-### Lightning Fast Estimation
-- **Sub-microsecond performance** for character-based estimation
-- **Smart heuristic algorithms** for accurate token approximation
-- **Zero runtime dependencies** for minimal package size
-- **Handles MB-scale prompts** without breaking a sweat
-
-### Extensible Provider Support
-Comes with built-in support for popular services through our plugin architecture:
-- **OpenAI Plugin**: GPT-4o, GPT-4 Turbo, GPT-3.5 Turbo, and more
-- **Anthropic Plugin**: Claude 3 Opus, Sonnet, Haiku, and newer models
-- **OpenRouter Plugin**: Access to 100+ models through a unified API
-- **Custom Providers**: Create your own plugin for any LLM service and submit a PR
-
-The plugin architecture makes it easy to add support for new providers while maintaining consistent token estimation and cost tracking across all models.
-
-### CLI-First Design (by Choice)
-Deliberately designed as a CLI-first tool for:
-- Instant token estimation for any text
-- Cost tracking across multiple LLM calls
-- Real-time pricing information access
-- Programmatic cost budget management
-- Simple integration into any workflow
-
-## 📦 Installation
-
-```bash
-# Install globally via npm
-npm install -g @light-merlin-dark/tok
-
-# Or use directly with npx
-npx @light-merlin-dark/tok estimate "your text here"
+```
+ _____ ___  _  __
+|_   _/ _ \| |/ /
+  | || | | | ' /
+  | || |_| | . \
+  |_| \___/|_|\_\
 ```
 
-### Prerequisites
-- Node.js 18.0.0 or higher
+Fast token estimation CLI with cost calculation. Zero dependencies, 85KB.
 
-## 🚀 Quick Start
+## Accuracy
 
-### CLI Usage
+Tested against OpenAI's tiktoken (cl100k_base encoding) across diverse text samples:
 
-#### Basic Token Estimation
+- **Average error: 19.7%** - Suitable for cost estimation and budgeting
+- **Best case: 0% error** - Simple texts match exactly
+- **Worst case: 52% error** - Complex JSON/code structures
+- **Median error: 21.6%**
+
+Our heuristic approach analyzes word count, punctuation, numbers, and character patterns to estimate tokens without heavy dependencies. Perfect for quick cost estimates, not for exact API billing.
+
+**Trade-off:** Fast, zero-dependency estimation vs. 100% accuracy requiring tiktoken library.
+
+## Quick Start
+
 ```bash
-# Estimate tokens for text
-tok estimate "Hello world"
+# Install globally
+npm install -g @light-merlin-dark/tok
 
-# Estimate with specific model pricing
-tok estimate "Your prompt here" --model gpt-4o
+# Estimate tokens
+tok estimate "Hello world"
+# Output:
+# Tokens: 3
+# Text length: 11 characters
+
+# Estimate with cost
+tok estimate "Hello world" --model gpt-4o
+# Output:
+# Tokens: 3
+# Model: gpt-4o
+# Prompt cost: $0.000008
+# Completion cost: $0.000030
 
 # Read from file
 tok estimate prompt.txt --file
-```
 
-#### Cost Tracking
-```bash
-# Start tracking costs
+# Track costs across multiple calls
 tok estimate "First prompt" --model gpt-4o --track
 tok estimate "Second prompt" --model claude-3-opus --track
-tok estimate "Third prompt" --model llama-3-70b --track
-
-# View cost summary
 tok track summary
-
-# Reset tracking
-tok track reset
+# Output:
+# Total cost: $0.000123
+# Total tokens: 45 prompt, 0 completion
+# Models: gpt-4o, claude-3-opus
 ```
 
-#### Price Management
-```bash
-# List all model prices
-tok price list
+## Programmatic Usage
 
-# Update model pricing
-tok price set gpt-4-turbo --prompt 10 --completion 30
+```typescript
+import { CharDivEstimator, TiktokenEstimator, PriceTable, CostTracker } from '@light-merlin-dark/tok';
 
-# View as JSON
-tok price list --format json
-```
-
-### Programmatic Usage
-
-```javascript
-import {
-  CharDivEstimator,
-  TiktokenEstimator,
-  PriceTable,
-  CostTracker,
-  CostCalculator
-} from '@light-merlin-dark/tok';
-
-// Fast estimation
+// Fast estimation (chars/4)
 const estimator = new CharDivEstimator();
 const tokens = estimator.estimate("Your text here");
+console.log(tokens); // 4
 
-// Advanced estimation with heuristics
-const advancedEstimator = new TiktokenEstimator();
-await advancedEstimator.initialize();
-const preciseTokens = advancedEstimator.estimate("Your text here");
+// Advanced heuristic estimation
+const advanced = new TiktokenEstimator();
+await advanced.initialize();
+const preciseTokens = advanced.estimate("Your text here");
+console.log(preciseTokens); // 4
 
 // Cost tracking
 const prices = new PriceTable();
 const tracker = new CostTracker();
-
 const price = prices.get('gpt-4o');
+
 tracker.add('gpt-4o', tokens, 0, price);
-
-console.log(`Total cost: $${tracker.grandTotal()}`);
+console.log(`Total cost: $${tracker.grandTotal()}`); // $0.00001
 ```
 
-## ✨ Key Features
+## CLI Commands
 
-### 🎯 Smart Estimation Algorithms
-- **Fast mode** (CharDivEstimator): Simple character-based estimation at ~chars/4
-- **Advanced mode** (TiktokenEstimator): Heuristic-based estimation with word analysis, punctuation weighting, and smart averaging
+```bash
+# Token estimation
+tok estimate <text>                    # Estimate tokens for text
+tok estimate <file> --file             # Estimate tokens from file
+tok estimate <text> --model <model>    # Include cost calculation
 
-### 💰 Comprehensive Cost Tracking
-- Real-time cost aggregation across models
-- Separate prompt vs completion pricing
-- Session-based tracking with duration
-- Export data as JSON for analysis
+# Cost tracking
+tok track summary                      # View tracked costs
+tok track reset                        # Reset tracking
 
-### 🛠️ Flexible Configuration
-- Customizable model pricing
-- Persistent configuration in `~/.tok/`
-- Environment-based overrides
-- JSON export/import support
+# Pricing
+tok price list                         # List all model prices
+tok price list --format json           # Output as JSON
+tok price set <model> --prompt <n> --completion <n>  # Set custom price
 
-### 📊 Rich Output Formats
-- **Human-readable**: Colored terminal output
-- **JSON**: Machine-parsable data
-- **Table**: Quick visual scanning
-
-## ⚙️ Configuration
-
-Configuration is stored in `~/.tok/config.json`:
-
-```json
-{
-  "prices": {
-    "custom-model": {
-      "prompt": 5.00,
-      "completion": 15.00
-    }
-  }
-}
+# Configuration
+tok config                             # Show config location
 ```
 
-## 📊 Default Pricing
+## Default Pricing
 
-Prices are per million tokens ($/M):
+Prices per million tokens ($/M):
 
 | Model | Prompt | Completion |
 |-------|--------|------------|
@@ -175,93 +117,70 @@ Prices are per million tokens ($/M):
 | llama-3-70b | $0.80 | $1.20 |
 | llama-3-8b | $0.20 | $0.30 |
 
-## 🧮 How It Works
+## How It Works
 
-### Token Estimation Algorithms
-
-**Fast Estimation (CharDivEstimator)**
-```typescript
-tokens = Math.ceil(text.length / 4)
+**CharDivEstimator** (fastest):
+```
+tokens ≈ Math.ceil(text.length / 4)
 ```
 
-**Advanced Heuristic Estimation (TiktokenEstimator)**
-```typescript
-// Analyzes text structure for better accuracy
-// - Word count with multiplier
-// - Punctuation and special character weighting
-// - Number and uppercase letter considerations
-// - Averages multiple estimation methods
+**TiktokenEstimator** (more accurate):
+- Counts words with 1.3x multiplier
+- Weights punctuation (0.3x per character)
+- Considers numbers (0.5x per occurrence)
+- Factors in uppercase letters (0.1x each)
+- Averages character-based estimate (chars / 3.5)
+
+**Cost Calculation**:
+```
+cost = (tokens / 1_000_000) × price_per_million
 ```
 
-### Cost Calculation
-```typescript
-cost = (tokens / 1_000_000) * price_per_million
+## Why tok?
+
+- **Lightweight**: 85KB total, zero runtime dependencies
+- **Fast**: Sub-microsecond character-based estimation
+- **Accurate enough**: ~80% accuracy for cost budgeting
+- **Simple**: Works out of the box, no configuration needed
+- **Flexible**: CLI for humans, API for code
+
+## Configuration
+
+Config stored in `~/.tok/config.json`:
+
+```json
+{
+  "prices": {
+    "custom-model": {
+      "prompt": 5.00,
+      "completion": 15.00
+    }
+  }
+}
 ```
 
-## 🔧 Development
+## Development
 
 ```bash
-# Clone the repository
+# Clone and install
 git clone https://github.com/light-merlin-dark/tok.git
 cd tok
-
-# Install dependencies
 make install
-
-# Run in development mode
-make dev
 
 # Run tests
 make test
 
-# Build for production
+# Build
 make build
-```
 
-## 🧪 Testing
-
-```bash
-# Run all tests
-npm test
-
-# Watch mode
-npm run test:watch
-```
-
-## 📝 API Usage
-
-```typescript
-import {
-  CharDivEstimator,
-  TiktokenEstimator,
-  PriceTable,
-  CostTracker,
-  CostCalculator
-} from '@light-merlin-dark/tok';
-
-// Fast estimation
-const estimator = new CharDivEstimator();
-const tokens = estimator.estimate("Your text here");
-
-// Advanced estimation
-const advancedEstimator = new TiktokenEstimator();
-await advancedEstimator.initialize();
-const preciseTokens = advancedEstimator.estimate("Your text here");
-
-// Cost tracking
-const prices = new PriceTable();
-const tracker = new CostTracker();
-
-const price = prices.get('gpt-4o');
-tracker.add('gpt-4o', tokens, 0, price);
-
-console.log(`Total cost: $${tracker.grandTotal()}`);
+# Development mode
+make dev
 ```
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) file for details.
+MIT
 
 ---
 
-Built with ❤️ by [@EnchantedRobot](https://x.com/EnchantedRobot)
+Built by [@EnchantedRobot](https://x.com/EnchantedRobot)

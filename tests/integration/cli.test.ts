@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { route } from '@/cli/router';
-import { RuntimeContext } from '@/cli/shared/core';
-import { resetTracker } from '@/cli/utils/tracker';
+import { describe, it, expect, beforeEach } from 'bun:test';
+import { route } from '../../src/cli/router';
+import { RuntimeContext } from '../../src/cli/shared/core';
+import { resetTracker } from '../../src/cli/utils/tracker';
 
 describe('CLI Integration Tests', () => {
   const mockContext: RuntimeContext = {

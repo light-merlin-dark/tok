@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Migrated from vitest to bun test for testing infrastructure
+  - Removed vitest dependency for lighter dev dependencies
+  - All 52 tests now run with bun test
+  - Faster test execution with native bun tooling
+- Overhauled README.md for high signal, developer-focused content
+  - Removed all emojis and marketing fluff
+  - Lead with package size (85KB) and zero dependencies
+  - Added accuracy metrics section with real test data (19.7% avg error, ~80% accurate)
+  - Included trade-off analysis: speed vs. tiktoken accuracy
+  - Simplified structure: ASCII logo → description → accuracy → examples
+- Improved .gitignore
+  - Added .source-hash to ignore list
+  - Added logs/ directory to ignore list
+
+### Fixed
+- Fixed type exports for TokenEstimator, ModelPrice, and ModelTotals
+  - Now properly exported as types for better TypeScript support
+  - Resolves ES module import issues
+
 ## [0.2.0] - 2025-08-12
 
 ### Changed

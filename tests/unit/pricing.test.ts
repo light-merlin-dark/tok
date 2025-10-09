@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { PriceTable } from '@/pricing/PriceTable';
-import { CostCalculator } from '@/CostCalculator';
+import { describe, it, expect } from 'bun:test';
+import { PriceTable } from '../../src/pricing/PriceTable';
+import { CostCalculator } from '../../src/CostCalculator';
 
 describe('PriceTable', () => {
   it('should initialize with default prices', () => {
