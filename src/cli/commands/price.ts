@@ -2,7 +2,7 @@ import { createCommand, CommandResult } from '../shared/core';
 import { logger, formatJson, formatTable } from '../common';
 import { ErrorCode, createCommandError } from '../shared/errors';
 import { PriceTable } from '../../index';
-import { getConfig, saveConfig } from '../utils/config';
+import { getConfig, saveConfig, loadPricesIntoTable } from '../utils/config';
 
 // Shared price table instance
 const prices = new PriceTable();
@@ -38,6 +38,10 @@ Examples:
 
   async execute(args, options): Promise<CommandResult> {
     const opts = options as PriceListOptions;
+
+    // Load custom prices from config
+    loadPricesIntoTable(prices);
+
     const allPrices = prices.list();
 
     if (opts.format === 'json') {

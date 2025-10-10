@@ -3,7 +3,8 @@ import { logger, formatHuman, formatJson, formatTable } from '../common';
 import { ErrorCode, createCommandError } from '../shared/errors';
 import { CharDivEstimator, TiktokenEstimator, PriceTable, CostCalculator } from '../../index';
 import * as fs from 'fs';
-import { getTracker } from '../utils/tracker';
+import { getTracker, persistTracker } from '../utils/tracker';
+import { loadPricesIntoTable } from '../utils/config';
 
 interface EstimateOptions {
   model?: string;
@@ -131,6 +132,7 @@ Available Models:
 
       // Calculate cost
       const prices = new PriceTable();
+      loadPricesIntoTable(prices);
       const model = opts.model || 'gpt-4o';
       const modelPrice = prices.get(model);
       let cost = null;
@@ -144,6 +146,7 @@ Available Models:
         if (opts.track) {
           const tracker = getTracker();
           tracker.add(model, tokens, 0, modelPrice);
+          persistTracker();
           if (verbose) {
             logger.debug('Added to cost tracking', true);
           }

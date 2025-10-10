@@ -10,6 +10,14 @@ Fast token estimation CLI with cost calculation
 Zero dependencies • 85KB • Bring your own pricing
 ```
 
+## Why TOK?
+
+- **85KB**: Minimal footprint
+- **Zero dependencies**: No tiktoken, no heavy libs
+- **Fast**: Sub-microsecond estimation
+- **Flexible**: Bring your own pricing
+- **Simple**: Works immediately
+
 ## Install
 
 ```bash
@@ -83,14 +91,6 @@ const tracker = new CostTracker();
 tracker.add('gpt-4o', tokens, 0, prices.get('gpt-4o'));
 console.log(`$${tracker.grandTotal()}`); // $0.00001
 ```
-
-## Why tok?
-
-- **85KB**: Minimal footprint
-- **Zero dependencies**: No tiktoken, no heavy libs
-- **Fast**: Sub-microsecond estimation
-- **Flexible**: Bring your own pricing
-- **Simple**: Works immediately
 
 ## License
 
