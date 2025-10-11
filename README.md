@@ -6,8 +6,8 @@
    ██║   ╚██████╔╝██║  ██╗
    ╚═╝    ╚═════╝ ╚═╝  ╚═╝
 
-Token estimation and cost calculation for LLMs
-TypeScript/JavaScript library + optional CLI • Zero deps • 85KB
+Blazingly fast token estimation and cost calculation for LLMs
+NPM package & CLI • Zero deps • 85KB
 ```
 
 ## Why TOK?
