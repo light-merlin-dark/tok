@@ -53,8 +53,8 @@ debug.test
 options.test
 dryrun.final
 final.dryrun.test
-blueprints
-chat.md
 .blueprints
-.chat.md
 .source-hash
+
+# Shared meta documentation
+_meta
