@@ -54,7 +54,10 @@ options.test
 dryrun.final
 final.dryrun.test
 .blueprints
-.source-hash
 
 # Shared meta documentation
 _meta
+@meta
+
+# Source hash metadata
+.source-hash
