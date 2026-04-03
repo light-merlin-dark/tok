@@ -14,7 +14,8 @@ export class TiktokenEstimator implements TokenEstimator {
     
     const charCount = text.length;
     const wordCount = text.split(/\s+/).filter(w => w.length > 0).length;
-    const punctuationCount = (text.match(/[.,!?;:'"()\[\]{}<>\/\\@#$%^&*+=_`~|-]/g) || []).length;
+    const punctuationCharacters = '.,!?;:\'"(){}<>/\\@#$%^&*+=_`~|-[]';
+    const punctuationCount = [...text].filter(ch => punctuationCharacters.includes(ch)).length;
     const numberCount = (text.match(/\d+/g) || []).length;
     const uppercaseCount = (text.match(/[A-Z]/g) || []).length;
     
